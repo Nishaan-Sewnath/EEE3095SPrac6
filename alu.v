@@ -1,3 +1,5 @@
+`timescale 1ns / 1ps
+
 module alu( clk, operand_a, operand_b, opcode, result);
     parameter DATA_WIDTH = 8;
 

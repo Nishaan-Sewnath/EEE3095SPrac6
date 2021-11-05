@@ -15,16 +15,16 @@ module tb_reg_mem;
     reg_mem #(DATA_WIDTH,ADDR_BITS) RM (addr, data_in, wen, clk, data_out);
 
     initial begin
-        /* For use in EDAPlayground
-        $dumpfile("dump.vcd");
-        $dumpvars(1, tb_reg_mem);
-        */
+        
+        //$dumpfile("dump.vcd");
+        //$dumpvars(1, tb_reg_mem);
+        
         
         clk = 0;
         wen = 1;
        
         //Write 10-42 to addresses 0-31 
-        for(integer i=10;i<43;i=i+1) 
+      for(int i=10;i<43;i=i+1) 
         begin
             data_in = i; 
             addr = (i+2);
@@ -34,7 +34,7 @@ module tb_reg_mem;
         wen =0;
         #1;
         //Read 10-42 to addresses 0-31
-        for(integer i=10;i<43;i=i+1) 
+      for(int i=10;i<43;i=i+1) 
         begin
             data_in = i; 
             addr = (i+2);

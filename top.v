@@ -1,3 +1,9 @@
+
+//to join all .v files
+`include "alu.v"
+`include "CU.v"
+`include "RegMem.v"
+
 `timescale 1ns / 1ps
 
 module simple_cpu( clk, rst, instruction );
@@ -23,6 +29,7 @@ module simple_cpu( clk, rst, instruction );
     wire [DATA_WIDTH-1:0]offset_i;
     wire sel1_i, sel3_i;
     wire [DATA_WIDTH-1:0] operand_1_i, operand_2_i;
+  	wire [DATA_WIDTH*4-1:0] regfile_i; //file used to display regfile registers internal to the CU module
 
     
     
@@ -30,11 +37,10 @@ module simple_cpu( clk, rst, instruction );
     alu #(DATA_WIDTH) alu1 (clk, operand_a_i, operand_b_i, opcode_i, result1_i);
      
     //instantiation of data memory
-    reg_mem  #(DATA_WIDTH,ADDR_BITS) data_memory(result1_i, data_in_i, wen_i, clk, data_out_i);
+  	reg_mem  #(DATA_WIDTH,ADDR_BITS) data_memory(result1_i[4:0], data_in_i, wen_i, clk, data_out_i);
     
     //Instantiation of a CU
-    CU  #(DATA_WIDTH,ADDR_BITS, INSTR_WIDTH) CU1(clk, rst, instruction, result2_i,
-        operand_1_i, operand_2_i, offset_i, opcode_i, sel1_i, sel3_i, wen_i);
+  	CU  #(DATA_WIDTH,ADDR_BITS, INSTR_WIDTH) CU1(clk, rst, instruction, result2_i, operand_1_i, operand_2_i, offset_i, opcode_i, sel1_i, sel3_i, wen_i, regfile_i);
     
 
     
@@ -47,5 +53,13 @@ module simple_cpu( clk, rst, instruction );
     
     //Connect datamem to CU
     assign result2_i = (sel1_i == 0) ? data_out_i : (sel1_i == 1) ? result1_i : 8'bx;  
-   
+    
+
+    
+
+
+
 endmodule
+
+
+
